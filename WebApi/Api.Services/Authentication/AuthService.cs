@@ -2,9 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security;
 using System.Security.Claims;
 using System.Text;
+using System.Web.Helpers;
 
 namespace Api.Services.Authentication
 {
@@ -30,6 +30,16 @@ namespace Api.Services.Authentication
             return new AuthenticationData(token, ((DateTimeOffset)tokenExpirationTime).ToUnixTimeSeconds(), id);
         }
 
+        public string GetPasswordHash(string password)
+        {
+            return Crypto.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string password, string passwordHash)
+        {
+            return Crypto.VerifyHashedPassword(passwordHash, password);
+        }
+
         private SecurityTokenDescriptor GetSecurityTokenDescriptor(string id, DateTime expirationTime)
         {
             return new SecurityTokenDescriptor
@@ -44,7 +54,5 @@ namespace Api.Services.Authentication
                     SecurityAlgorithms.HmacSha256Signature)
             };
         }
-
-        public string GetPasswordHash(SecureString password) => throw new System.NotImplementedException();
     }
 }

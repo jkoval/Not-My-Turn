@@ -6,6 +6,8 @@ namespace Api.Services.Authentication
     public interface IAuthService
     {
         AuthenticationData GetAuthenticationData(string id);
-        string GetPasswordHash(SecureString password);
+
+        string GetPasswordHash(string password);
+        bool VerifyPassword(string password, string passwordHash);
     }
 }

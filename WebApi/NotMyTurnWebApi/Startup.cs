@@ -1,8 +1,10 @@
 using Api.Services.Authentication;
+using Api.Services.Database;
+using Api.Services.Database.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +15,6 @@ namespace NotMyTurnWebApi
 {
     public class Startup
     {
-        private const string CorsPolicyName = "SiteCorsPolicy";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +26,8 @@ namespace NotMyTurnWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<ApplicationDbContext>(context => context.UseInMemoryDatabase("TestDatabase"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -43,19 +45,13 @@ namespace NotMyTurnWebApi
                     };
                 });
 
+            services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+
             services.AddSingleton<IAuthService>(new AuthService(
                 Configuration.GetValue<string>("JwtSecretKey"),
                 Configuration.GetValue<int>("JwtLifespan")));
 
             services.AddCors();
-
-            //var corsBuilder = new CorsPolicyBuilder();
-            //corsBuilder.AllowAnyHeader();
-            //corsBuilder.AllowAnyMethod();
-            //corsBuilder.AllowAnyOrigin();
-            //var policy = corsBuilder.Build();
-
-            //services.AddCors(options => options.AddDefaultPolicy(policy));//AddPolicy(CorsPolicyName, corsBuilder.Build()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +66,7 @@ namespace NotMyTurnWebApi
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());

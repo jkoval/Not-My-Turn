@@ -1,6 +1,9 @@
 ﻿using Api.Models.Authentication;
+using Api.Models.Dbo;
 using Api.Services.Authentication;
+using Api.Services.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace NotMyTurnWebApi.Controllers
 {
@@ -9,10 +12,12 @@ namespace NotMyTurnWebApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserAccountRepository _userAccountRepository;
 
-        public AuthenticationController(IAuthService authService)
+        public AuthenticationController(IAuthService authService, IUserAccountRepository userAccountRepository)
         {
             _authService = authService;
+            _userAccountRepository = userAccountRepository;
         }
 
         [HttpPost("login")]
@@ -20,10 +25,35 @@ namespace NotMyTurnWebApi.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var usernameTest = loginModel.Username;
-            var passwordTest = loginModel.Password;
+            var userAccount = _userAccountRepository.GetSingle(x => x.Username == loginModel.Username);
+            if (userAccount == null)
+                return BadRequest(new { Error = "Invalid Username or Password" });
 
-            return _authService.GetAuthenticationData("1");
+            if (!_authService.VerifyPassword(loginModel.Password, userAccount.PasswordHash))
+                return BadRequest(new { Error = "Invalid Username or Password" });
+
+            return _authService.GetAuthenticationData(userAccount.Id);
+        }
+
+        [HttpPost("register")]
+        public ActionResult<AuthenticationData> Post([FromBody]RegisterModel registerModel)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!_userAccountRepository.IsUsernameUnique(registerModel.Username))
+                return BadRequest(new { Error = "Username already exists" });
+
+            var userAccount = new UserAccount
+            {
+                Id = Guid.NewGuid().ToString(),
+                Username = registerModel.Username,
+                PasswordHash = _authService.GetPasswordHash(registerModel.Password)
+            };
+
+            _userAccountRepository.Add(userAccount);
+            _userAccountRepository.Commit();
+
+            return _authService.GetAuthenticationData(userAccount.Id);
         }
     }
 }
