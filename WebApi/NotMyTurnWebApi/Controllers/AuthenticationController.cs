@@ -27,10 +27,10 @@ namespace NotMyTurnWebApi.Controllers
 
             var userAccount = _userAccountRepository.GetSingle(x => x.Username == loginModel.Username);
             if (userAccount == null)
-                return BadRequest(new { Error = "Invalid Username or Password" });
+                return Unauthorized(new { Error = "Invalid Username or Password" });
 
             if (!_authService.VerifyPassword(loginModel.Password, userAccount.PasswordHash))
-                return BadRequest(new { Error = "Invalid Username or Password" });
+                return Unauthorized(new { Error = "Invalid Username or Password" });
 
             return _authService.GetAuthenticationData(userAccount.Id);
         }
@@ -47,7 +47,8 @@ namespace NotMyTurnWebApi.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = registerModel.Username,
-                PasswordHash = _authService.GetPasswordHash(registerModel.Password)
+                PasswordHash = _authService.GetPasswordHash(registerModel.Password),
+                Name = registerModel.Name
             };
 
             _userAccountRepository.Add(userAccount);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { setUserSession } from '../Utils/UserStateUtils'
+const axios = require('axios');
  
 function Login(props) {
   const username = useFormInput('');
@@ -13,15 +14,19 @@ function Login(props) {
           Password: password.value
       });
 
-      fetch("http://localhost:5000/api/auth/login", {
-          method: 'POST',
+      axios({
+          method: 'post',
+          url: "http://localhost:5000/api/auth/login",
           headers: {
             'Content-Type': 'application/json'
           },
-          body: body
-      }).then(data => {
-          setUserSession(data.token, data.Id);
+          data: body
+      }).then(response => {
+          setUserSession(response.data.token, response.data.id);
           props.history.push('/dashboard');
+      }).catch(error => {
+          var serverError = error.response.data;
+          setError(serverError.error);
       });
   }
  
@@ -36,7 +41,8 @@ function Login(props) {
         Password<br />
         <input type="password" {...password}/>
       </div>
-      {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
+      <br />
+      {error && <><small style={{ color: 'red' }}>{error}</small><br /><br /></>}
       <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
     </div>
   );
