@@ -25,6 +25,11 @@ function Login(props) {
           setUserSession(response.data.token, response.data.id);
           props.history.push('/dashboard');
       }).catch(error => {
+          if (error.response === undefined) {
+              alert(error.message);
+              return;
+          }
+
           var serverError = error.response.data;
           setError(serverError.error);
       });

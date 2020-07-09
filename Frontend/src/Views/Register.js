@@ -9,7 +9,6 @@ function Register(props) {
     const confirmPassword = useFormInput('');
 
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     const handleRegister = () => {
         if (password.value != confirmPassword.value)
@@ -61,7 +60,7 @@ function Register(props) {
           </div>
           <br />
           {error && <><small style={{ color: 'red' }}>{error}</small><br /><br /></>}
-          <input type="button" value={loading ? 'Loading...' : 'Register'} onClick={handleRegister} disabled={loading} /><br />
+          <input type="button" value='Register' onClick={handleRegister} /><br />
         </div>
       );
 }

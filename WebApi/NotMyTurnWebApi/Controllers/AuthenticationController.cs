@@ -25,6 +25,9 @@ namespace NotMyTurnWebApi.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            if (!loginModel.IsValid)
+                return Unauthorized(new { Error = "Invalid Username or Password" });
+
             var userAccount = _userAccountRepository.GetSingle(x => x.Username == loginModel.Username);
             if (userAccount == null)
                 return Unauthorized(new { Error = "Invalid Username or Password" });
@@ -39,6 +42,9 @@ namespace NotMyTurnWebApi.Controllers
         public ActionResult<AuthenticationData> Post([FromBody]RegisterModel registerModel)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!registerModel.IsValid)
+                return BadRequest(new { Error = "Invalid fields" });
 
             if (!_userAccountRepository.IsUsernameUnique(registerModel.Username))
                 return BadRequest(new { Error = "Username already exists" });
