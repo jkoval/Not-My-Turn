@@ -48,6 +48,7 @@ namespace NotMyTurnWebApi
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 
             services.AddSingleton<IAuthService>(new AuthService(
+                new PasswordHasher(),
                 Configuration.GetValue<string>("JwtSecretKey"),
                 Configuration.GetValue<int>("JwtLifespan")));
 

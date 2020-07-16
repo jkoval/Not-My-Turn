@@ -4,17 +4,18 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Web.Helpers;
 
 namespace Api.Services.Authentication
 {
     public class AuthService : IAuthService
     {
+        private readonly IPasswordHasher _passwordHasher;
         private readonly string _secretKey;
         private readonly int _jwtLifespan;
 
-        public AuthService(string secretKey, int jwtLifespan)
+        public AuthService(IPasswordHasher passwordHasher, string secretKey, int jwtLifespan)
         {
+            _passwordHasher = passwordHasher;
             _secretKey = secretKey;
             _jwtLifespan = jwtLifespan;
         }
@@ -32,12 +33,12 @@ namespace Api.Services.Authentication
 
         public string GetPasswordHash(string password)
         {
-            return Crypto.HashPassword(password);
+            return _passwordHasher.HashPassword(password);
         }
 
         public bool VerifyPassword(string password, string passwordHash)
         {
-            return Crypto.VerifyHashedPassword(passwordHash, password);
+            return _passwordHasher.VerifyHashedPassword(passwordHash, password);
         }
 
         private SecurityTokenDescriptor GetSecurityTokenDescriptor(int id, DateTime expirationTime)
