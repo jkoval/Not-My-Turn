@@ -1,6 +1,6 @@
-﻿using Api.Models.Dbo;
+﻿using Api.Database.Dbo;
 
-namespace Api.Services.Database.Repositories
+namespace Api.Database.Repositories
 {
     public class UserAccountRepository : BaseRepository<UserAccount>, IUserAccountRepository
     {

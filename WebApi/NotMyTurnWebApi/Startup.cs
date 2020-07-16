@@ -1,6 +1,6 @@
+using Api.Database;
+using Api.Database.Repositories;
 using Api.Services.Authentication;
-using Api.Services.Database;
-using Api.Services.Database.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

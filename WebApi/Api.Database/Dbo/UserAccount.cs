@@ -1,8 +1,8 @@
-﻿namespace Api.Models.Dbo
+﻿namespace Api.Database.Dbo
 {
     public class UserAccount
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
 

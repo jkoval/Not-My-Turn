@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Api.Services.Database.Repositories
+namespace Api.Database.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class, new()
     {

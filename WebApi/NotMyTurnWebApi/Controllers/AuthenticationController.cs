@@ -1,9 +1,8 @@
-﻿using Api.Models.Authentication;
-using Api.Models.Dbo;
+﻿using Api.Database.Dbo;
+using Api.Database.Repositories;
+using Api.Models.Authentication;
 using Api.Services.Authentication;
-using Api.Services.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace NotMyTurnWebApi.Controllers
 {
@@ -51,7 +50,7 @@ namespace NotMyTurnWebApi.Controllers
 
             var userAccount = new UserAccount
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = 2,
                 Username = registerModel.Username,
                 PasswordHash = _authService.GetPasswordHash(registerModel.Password),
                 Name = registerModel.Name

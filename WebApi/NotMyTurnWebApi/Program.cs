@@ -1,6 +1,6 @@
-using Api.Models.Dbo;
+using Api.Database;
+using Api.Database.Dbo;
 using Api.Services.Authentication;
-using Api.Services.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +20,7 @@ namespace NotMyTurnWebApi
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 context.UserAccounts.Add(new UserAccount
                 {
-                    Id = "1",
+                    Id = 1,
                     Username = "Jack",
                     PasswordHash = authService.GetPasswordHash("MyPassword"),
                     Name = "Jack"

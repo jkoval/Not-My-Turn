@@ -19,7 +19,7 @@ namespace Api.Services.Authentication
             _jwtLifespan = jwtLifespan;
         }
 
-        public AuthenticationData GetAuthenticationData(string id)
+        public AuthenticationData GetAuthenticationData(int id)
         {
             var tokenExpirationTime = DateTime.UtcNow.AddSeconds(_jwtLifespan);
 
@@ -40,13 +40,13 @@ namespace Api.Services.Authentication
             return Crypto.VerifyHashedPassword(passwordHash, password);
         }
 
-        private SecurityTokenDescriptor GetSecurityTokenDescriptor(string id, DateTime expirationTime)
+        private SecurityTokenDescriptor GetSecurityTokenDescriptor(int id, DateTime expirationTime)
         {
             return new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, id)
+                    new Claim(ClaimTypes.Name, id.ToString())
                 }),
                 Expires = expirationTime,
                 SigningCredentials = new SigningCredentials(

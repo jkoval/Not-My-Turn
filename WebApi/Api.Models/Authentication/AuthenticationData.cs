@@ -4,9 +4,9 @@
     {
         public string Token { get; }
         public long TokenExpirationTime { get; }
-        public string Id { get; }
+        public int Id { get; }
 
-        public AuthenticationData(string token, long tokenExpirationTime, string id)
+        public AuthenticationData(string token, long tokenExpirationTime, int id)
         {
             Token = token;
             TokenExpirationTime = tokenExpirationTime;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Api.Services.Database.Repositories
+namespace Api.Database.Repositories
 {
     public interface IRepository<T> where T : class, new()
     {

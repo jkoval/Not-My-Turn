@@ -1,5 +1,5 @@
-﻿using Api.Models.Dbo;
-using Api.Services.Database.Repositories;
+﻿using Api.Database.Dbo;
+using Api.Database.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,7 +1,7 @@
-﻿using Api.Models.Dbo;
+﻿using Api.Database.Dbo;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Services.Database
+namespace Api.Database
 {
     public class ApplicationDbContext : DbContext
     {
