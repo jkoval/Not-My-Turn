@@ -25,7 +25,9 @@ namespace NotMyTurnWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddDbContext<ApplicationDbContext>(context => context.UseSqlite(@"Data Source=c:\temp\notmyturn.db;"));
 
@@ -46,6 +48,7 @@ namespace NotMyTurnWebApi
                 });
 
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+            services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
             services.AddSingleton<IAuthService>(new AuthService(
                 new PasswordHasher(),

@@ -1,4 +1,6 @@
-﻿namespace Api.Database.Dbo
+﻿using System.Collections.Generic;
+
+namespace Api.Database.Dbo
 {
     public class UserAccount
     {
@@ -7,5 +9,7 @@
         public string PasswordHash { get; set; }
 
         public string Name { get; set; }
+
+        public virtual ICollection<UserGroupUser> Groups { get; set; }
     }
 }
