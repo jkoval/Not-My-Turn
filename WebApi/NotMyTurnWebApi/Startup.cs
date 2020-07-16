@@ -27,7 +27,7 @@ namespace NotMyTurnWebApi
         {
             services.AddControllers();
 
-            services.AddDbContext<ApplicationDbContext>(context => context.UseInMemoryDatabase("TestDatabase"));
+            services.AddDbContext<ApplicationDbContext>(context => context.UseSqlite(@"Data Source=c:\temp\notmyturn.db;"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

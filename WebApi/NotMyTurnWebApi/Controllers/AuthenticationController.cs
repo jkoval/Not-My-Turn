@@ -50,7 +50,6 @@ namespace NotMyTurnWebApi.Controllers
 
             var userAccount = new UserAccount
             {
-                Id = 2,
                 Username = registerModel.Username,
                 PasswordHash = _authService.GetPasswordHash(registerModel.Password),
                 Name = registerModel.Name
