@@ -1,4 +1,5 @@
 ﻿using Api.Database.Dbo;
+using System.Collections.Generic;
 
 namespace Api.Database.Repositories
 {
@@ -9,5 +10,7 @@ namespace Api.Database.Repositories
         void AddUserToGroup(UserAccount user, UserGroup group);
 
         UserGroup LoadUserGroup(int id);
+
+        IEnumerable<UserGroup> LoadUserGroupsByUserId(int userId);
     }
 }

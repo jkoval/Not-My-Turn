@@ -23,6 +23,11 @@ namespace Api.Database.Repositories
             return _dbContext.Set<T>().FirstOrDefault(predicate);
         }
 
+        public virtual void Delete(T entity)
+        {
+            _dbContext.Set<T>().Remove(entity);
+        }
+
         public virtual void Commit()
         {
             _dbContext.SaveChanges();

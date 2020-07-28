@@ -6,6 +6,7 @@ import Home from './Views/Home.js';
 import Login from './Views/Login.js';
 import Register from './Views/Register.js';
 import Dashboard from './Views/Dashboard.js';
+import Group from './Views/Group.js';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
@@ -20,6 +21,7 @@ function App() {
             <NavLink to="/login">Login</NavLink>
             <NavLink to="/register">Register</NavLink>
             <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/groups">Groups</NavLink>
           </div>
           <div>
             <Switch>
@@ -27,6 +29,7 @@ function App() {
               <PublicRoute path="/login" component={Login} />
               <PublicRoute path="/register" component={Register} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/groups" component={Group} />
             </Switch>
           </div>
         </div>

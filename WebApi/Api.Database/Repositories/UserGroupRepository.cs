@@ -1,5 +1,6 @@
 ﻿using Api.Database.Dbo;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Api.Database.Repositories
@@ -53,6 +54,13 @@ namespace Api.Database.Repositories
                 .Include(x => x.Users)
                 .ThenInclude(x => x.User)
                 .FirstOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<UserGroup> LoadUserGroupsByUserId(int userId)
+        {
+            return _dbContext.UserGroups
+                .Include(x => x.Users)
+                .Where(x => x.Users.Any(x => x.UserId == userId));
         }
     }
 }

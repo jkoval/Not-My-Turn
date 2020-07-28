@@ -10,5 +10,7 @@ namespace Api.Database.Repositories
         T GetSingle(Expression<Func<T, bool>> predicate);
 
         void Commit();
+
+        void Delete(T entity);
     }
 }
