@@ -1,6 +1,7 @@
 using Api.Database;
 using Api.Database.Repositories;
 using Api.Services.Authentication;
+using Api.Services.Routing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +50,9 @@ namespace NotMyTurnWebApi
 
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
             services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+            services.AddScoped<IDriveRepository, DriveRepository>();
+            services.AddScoped<IRouteFinder, RouteFinder>();
+            services.AddScoped<IRouteParser, RouteParser>();
 
             services.AddSingleton<IAuthService>(new AuthService(
                 new PasswordHasher(),

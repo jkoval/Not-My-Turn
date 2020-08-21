@@ -7,10 +7,12 @@ namespace Api.Database
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<Drive> Drives { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
