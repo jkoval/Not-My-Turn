@@ -8,7 +8,7 @@ namespace Api.Services.Routing
     public class RouteFinder : IRouteFinder
     {
         private const string RouteRequestBase = "https://route.ls.hereapi.com/routing/7.2/calculateroute.json?";
-        private const string ApiKey = "apiKey=pDHinJrky68ZhLYIqx0R46pkNjqO_7-wkuaVYd8Bk0M";
+        private const string ApiKey = "apiKey=-5vdrbBJvRArplkgrZ3dtbawsWul0z0bZEh04OwM_L0";
         private const string Mode = "mode=fastest;car";
 
         public string GetRoute(IEnumerable<Location> locations)

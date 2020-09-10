@@ -6,5 +6,6 @@
         public int DriverUserId { get; set; }
         public int UserGroupId { get; set; }
         public string[] Locations { get; set; }
+        public string Timestamp { get; set; }
     }
 }

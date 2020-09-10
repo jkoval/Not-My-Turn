@@ -70,7 +70,8 @@ namespace NotMyTurnWebApi.Controllers
                 Passengers = passengers,
                 Group = userGroup,
                 DistanceInKm = _routeParser.DistanceInKm,
-                DurationInSeconds = _routeParser.DurationInSeconds
+                DurationInSeconds = _routeParser.DurationInSeconds,
+                Timestamp = addDriveModel.Timestamp
             };
 
             _driveRepository.Add(drive);

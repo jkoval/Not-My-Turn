@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Api.Database.Dbo
 {
@@ -12,5 +13,7 @@ namespace Api.Database.Dbo
 
         public int DistanceInKm { get; set; }
         public int DurationInSeconds { get; set; }
+
+        public string Timestamp { get; set; }
     }
 }

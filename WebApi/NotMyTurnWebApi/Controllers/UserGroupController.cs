@@ -46,15 +46,15 @@ namespace NotMyTurnWebApi.Controllers
         }
 
         [HttpPost("adduser")]
-        public ActionResult<UserGroup> AddUser([FromBody] AddUserToGroupModel addUserToGroupModel)
+        public ActionResult<UserGroup> AddUser(int groupId, string username)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = _userAccountRepository.GetSingle(x => x.Id == addUserToGroupModel.UserId);
+            var user = _userAccountRepository.GetSingle(x => x.Username == username);
             if (user == null)
                 return BadRequest(new { Error = "Not a valid user" });
 
-            var group = _userGroupRepository.LoadUserGroup(addUserToGroupModel.GroupId);
+            var group = _userGroupRepository.LoadUserGroup(groupId);
             if (group == null)
                 return BadRequest(new { Error = "Not a valid group" });
 

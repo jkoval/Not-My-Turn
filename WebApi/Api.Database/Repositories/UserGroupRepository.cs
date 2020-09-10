@@ -60,6 +60,7 @@ namespace Api.Database.Repositories
         {
             return _dbContext.UserGroups
                 .Include(x => x.Users)
+                .ThenInclude(x => x.User)
                 .Where(x => x.Users.Any(x => x.UserId == userId));
         }
     }

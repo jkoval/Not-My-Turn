@@ -5,5 +5,6 @@ namespace Api.Database.Repositories
 {
     public interface IDriveRepository : IRepository<Drive>
     {
+        IEnumerable<Drive> GetDrivesByUserGroup(int userGroupId);
     }
 }
