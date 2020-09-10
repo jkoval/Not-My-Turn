@@ -34,6 +34,9 @@ namespace Api.Database.Migrations
                     b.Property<int?>("GroupId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Timestamp")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DriverId");

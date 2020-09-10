@@ -75,6 +75,7 @@ namespace NotMyTurnWebApi.Controllers
             };
 
             _driveRepository.Add(drive);
+            _driveRepository.Commit();
             return drive;
         }
     }

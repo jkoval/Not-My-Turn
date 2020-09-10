@@ -1,4 +1,5 @@
 ﻿using Api.Database.Dbo;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +17,7 @@ namespace Api.Database.Repositories
         public IEnumerable<Drive> GetDrivesByUserGroup(int userGroupId)
         {
             return _dbContext.Drives
+                .Include(x => x.Driver)
                 .Where(x => x.Group.Id == userGroupId);
         }
     }
