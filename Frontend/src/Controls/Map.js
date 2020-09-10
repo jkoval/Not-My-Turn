@@ -46,7 +46,7 @@ class Map extends React.Component {
             // var marker = new window.H.map.Marker({lat:coord.lat, lng:coord.lng});
             // map.addObject(marker);
 
-            onTap(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+            onTap(map, evt.currentPointer.viewportX, evt.currentPointer.viewportY);
         });
     }
 

@@ -7,6 +7,7 @@ import Login from './Views/Login.js';
 import Register from './Views/Register.js';
 import Dashboard from './Views/Dashboard.js';
 import Group from './Views/Group.js';
+import Drive from './Views/Drive.js';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
@@ -22,6 +23,7 @@ function App() {
             <NavLink to="/register">Register</NavLink>
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/groups">Groups</NavLink>
+            <NavLink to="/drives">Drives</NavLink>
           </div>
           <div>
             <Switch>
@@ -30,6 +32,7 @@ function App() {
               <PublicRoute path="/register" component={Register} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/groups" component={Group} />
+              <PrivateRoute path="/drives" component={Drive} />
             </Switch>
           </div>
         </div>
