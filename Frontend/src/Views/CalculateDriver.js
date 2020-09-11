@@ -27,12 +27,44 @@ class CalculateDriver extends React.Component {
         super(props);
 
         this.state = {
-            nextDriver: ""
+            nextDriver: "",
+            currentGroup: null,
+            groups: []
         };
 
         this.leastDistance = this.leastDistance.bind(this);
-        this.leastAmount = this.leastAmount.bind(this);
-        this.leastTime = this.leastTime.bind(this);
+        this.leastDuration = this.leastDuration.bind(this);
+        this.leastRecent = this.leastRecent.bind(this);
+        this.onGroupSelect = this.onGroupSelect.bind(this);
+        this.getGroups = this.getGroups.bind(this);
+    }
+
+    componentDidMount() {
+        this.getGroups();
+    }
+
+    getGroups = () => {
+        var token = getToken();
+
+        axios({
+            method: 'get',
+            url: "http://localhost:5000/api/group/byuser/" + getUser(),
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(response => {
+            var data = response.data;
+            var groups = data.map(function(group) {
+                 return { name: group.name, id: group.id };
+            });
+            this.setState({ groups: groups});
+        }).catch(error => {
+
+        });
+    }
+
+    onGroupSelect(event) {
+        this.setState({currentGroup: event.target.value});
     }
 
     leastDistance() {
@@ -40,7 +72,7 @@ class CalculateDriver extends React.Component {
 
         axios({
             method: 'get',
-            url: "http://localhost:5000/api/calculate/bydistance/1",
+            url: "http://localhost:5000/api/calculate/bydistance/" + this.state.currentGroup.id,
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -52,12 +84,12 @@ class CalculateDriver extends React.Component {
         });
     }
 
-    leastAmount() {
+    leastDuration() {
         var token = getToken();
 
         axios({
             method: 'get',
-            url: "http://localhost:5000/api/calculate/byduration/1",
+            url: "http://localhost:5000/api/calculate/byduration/" + this.state.currentGroup.id,
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -69,12 +101,12 @@ class CalculateDriver extends React.Component {
         });
     }
 
-    leastTime() {
+    leastRecent() {
         var token = getToken();
 
         axios({
             method: 'get',
-            url: "http://localhost:5000/api/calculate/bytime/1",
+            url: "http://localhost:5000/api/calculate/bytime/" + this.state.currentGroup.id,
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -87,6 +119,11 @@ class CalculateDriver extends React.Component {
     }
 
     render() {
+        let groups = [];
+        this.state.groups.forEach((group) => {
+            groups.push(<MenuItem value={group}>{group.name}</MenuItem>);
+        });
+
         return (
             <div>
                 <div>
@@ -99,9 +136,10 @@ class CalculateDriver extends React.Component {
                         <Select
                             labelId="group-select-label"
                             id="group-select"
-                            value={this.currentGroup}
+                            value={this.state.currentGroup}
                             onChange={this.onGroupSelect}
                         >
+                            {groups}
                         </Select>
                     </StyledFormControl>
                 </div>
@@ -111,14 +149,14 @@ class CalculateDriver extends React.Component {
                 <Typography variant="h4">Choose the next driver from the following criteria!</Typography>
                 <br />
                 <div>
-                    <BigButton variant="contained" color="primary" onClick={this.leastDistance}>
+                    <BigButton variant="contained" color="primary" onClick={this.leastDistance} disabled={this.state.currentGroup === null}>
                         Least Distance
                     </BigButton>
-                    <BigButton variant="contained" color="primary" onClick={this.leastAmount}>
-                        Least Amount
+                    <BigButton variant="contained" color="primary" onClick={this.leastDuration} disabled={this.state.currentGroup === null}>
+                        Least Duration
                     </BigButton>
-                    <BigButton variant="contained" color="primary" onClick={this.leastTime}>
-                        Least Time
+                    <BigButton variant="contained" color="primary" onClick={this.leastRecent} disabled={this.state.currentGroup === null}>
+                        Least Recent
                     </BigButton>
                 </div>
 

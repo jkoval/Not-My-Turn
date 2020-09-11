@@ -10,10 +10,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { getUser, getToken } from '../Utils/UserStateUtils'
+import DateFnsUtils from '@date-io/date-fns';
+import { 
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers';
 const axios = require('axios');
 
 const StyledFormControl = styled(FormControl)({
-    minWidth: 150,
+    minWidth: 300,
     minHeight: 50
 });
 
@@ -27,13 +32,14 @@ class AddDrive extends React.Component {
             currentGroup: null,
             drivers: [],
             currentDriver: null,
-            loopJourney: false,
-            map: null
+            map: null,
+            selectedDate: new Date()
         };
         
         this.onTap = this.onTap.bind(this);
         this.onGroupSelect = this.onGroupSelect.bind(this);
         this.onDriverSelect = this.onDriverSelect.bind(this);
+        this.handleDateChange =  this.handleDateChange.bind(this);
         this.addDrive = this.addDrive.bind(this);
     }
 
@@ -61,6 +67,10 @@ class AddDrive extends React.Component {
 
     onDriverSelect(event) {
         this.setState({currentDriver: event.target.value});
+    }
+
+    handleDateChange(date) {
+        this.setState({selectedDate: date});
     }
 
     getGroups = () => {
@@ -115,7 +125,7 @@ class AddDrive extends React.Component {
             DriverUserId: this.state.currentDriver,
             UserGroupId: this.state.currentGroup.id,
             Locations: locations,
-            Timestamp: ""
+            Timestamp: this.state.selectedDate
         });
 
         axios({
@@ -183,18 +193,24 @@ class AddDrive extends React.Component {
                     <br />
 
                     <StyledFormControl>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked="false"
-                                    name="checkedB"
-                                    color="primary"
-                                />
-                            }
-                            label="Loop Journey?"
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                disableToolbar
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label="Date"
+                                value={this.state.selectedDate}
+                                onChange={this.handleDateChange}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
                     </StyledFormControl>
 
+                    <br />
                     <br />
 
                     <Button variant="contained" color="primary" onClick={this.addDrive}>

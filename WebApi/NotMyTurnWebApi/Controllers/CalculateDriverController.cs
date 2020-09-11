@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NotMyTurnWebApi.Controllers
 {
@@ -13,77 +14,87 @@ namespace NotMyTurnWebApi.Controllers
     {
         private readonly IDriveRepository _driveRepository;
         private readonly IUserAccountRepository _userAccountRepository;
+        private readonly Random _random;
 
         public CalculateDriverController(IDriveRepository driveRepository, IUserAccountRepository userAccountRepository)
         {
             _driveRepository = driveRepository;
             _userAccountRepository = userAccountRepository;
+
+            _random = new Random();
+        }
+
+        public (IEnumerable<Drive>, Dictionary<int, T>, IList<int>) GetDrives<T>(int groupId)
+        {
+            var drives = _driveRepository.GetDrivesByUserGroup(groupId).ToList();
+            var drivers = drives.Select(x => x.Driver.Id).Distinct().ToDictionary(x => x, y => default(T));
+
+            var noDrivesAtAll = drives[0].Group.Users.Select(x => x.UserId).Where(x => !drivers.ContainsKey(x)).ToList();
+            return (drives, drivers, noDrivesAtAll);
         }
 
         [HttpGet("bydistance/{groupId:int}")]
         public UserAccount CalculateByDistance(int groupId)
         {
-            var drives = _driveRepository.GetDrivesByUserGroup(groupId);
-            var drivers = new Dictionary<int, decimal>();
+            var (drives, drivers, noDrivesAtAll) = GetDrives<decimal>(groupId);
 
             foreach (var drive in drives)
             {
-                if (!drivers.ContainsKey(drive.Driver.Id))
-                {
-                    drivers.Add(drive.Driver.Id, 0m);
-                }
-
                 drivers[drive.Driver.Id] += drive.DistanceInKm;
             }
 
             var lowestDistanceUserId = drivers.OrderBy(x => x.Value).FirstOrDefault().Key;
+
+            if (noDrivesAtAll.Count > 0)
+            {
+                lowestDistanceUserId = noDrivesAtAll[_random.Next(noDrivesAtAll.Count)];
+            }
+
             return _userAccountRepository.GetSingle(x => x.Id == lowestDistanceUserId);
         }
 
         [HttpGet("bytime/{groupId:int}")]
         public UserAccount CalculateByLeastRecent(int groupId)
         {
-            var drives = _driveRepository.GetDrivesByUserGroup(groupId);
-            var drivers = new Dictionary<int, DateTime>();
+            var (drives, drivers, noDrivesAtAll) = GetDrives<DateTime>(groupId);
 
             foreach (var drive in drives)
             {
                 var dateTime = DateTime.Parse(drive.Timestamp);
 
-                if (!drivers.ContainsKey(drive.Driver.Id))
+                if (dateTime > drivers[drive.Driver.Id])
                 {
-                    drivers.Add(drive.Driver.Id, dateTime);
-                }
-                else
-                {
-                    if (dateTime < drivers[drive.Driver.Id])
-                    {
-                        drivers[drive.Driver.Id] = dateTime;
-                    }
+                    drivers[drive.Driver.Id] = dateTime;
                 }
             }
 
             var leastRecentDriverId = drivers.OrderBy(x => x.Value).FirstOrDefault().Key;
+
+            if (noDrivesAtAll.Count > 0)
+            {
+                leastRecentDriverId = noDrivesAtAll[_random.Next(noDrivesAtAll.Count)];
+            }
+
             return _userAccountRepository.GetSingle(x => x.Id == leastRecentDriverId);
         }
 
         [HttpGet("byduration/{groupId:int}")]
         public UserAccount CalculateByDuration(int groupId)
         {
-            var drives = _driveRepository.GetDrivesByUserGroup(groupId);
-            var drivers = new Dictionary<int, decimal>();
+            var (drives, drivers, noDrivesAtAll) = GetDrives<decimal>(groupId);
 
             foreach (var drive in drives)
             {
-                if (!drivers.ContainsKey(drive.Driver.Id))
-                {
-                    drivers.Add(drive.Driver.Id, 0m);
-                }
-
                 drivers[drive.Driver.Id] += drive.DurationInSeconds;
             }
 
             var lowestDurationUserId = drivers.OrderBy(x => x.Value).FirstOrDefault().Key;
+
+            if (noDrivesAtAll.Count > 0)
+            {
+                lowestDurationUserId = noDrivesAtAll[_random.Next(noDrivesAtAll.Count)];
+            }
+
             return _userAccountRepository.GetSingle(x => x.Id == lowestDurationUserId);
         }
     }

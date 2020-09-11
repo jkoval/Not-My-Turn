@@ -18,6 +18,8 @@ namespace Api.Database.Repositories
         {
             return _dbContext.Drives
                 .Include(x => x.Driver)
+                .Include(x => x.Group)
+                .ThenInclude(x => x.Users)
                 .Where(x => x.Group.Id == userGroupId);
         }
     }
