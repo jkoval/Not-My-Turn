@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { removeUserSession, getToken } from '../Utils/UserStateUtils'
+import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 const axios = require('axios');
 
 function Dashboard(props) {
@@ -33,13 +35,17 @@ function Dashboard(props) {
 
     return (
         <div>
-            Welcome, {name}!<br /><br />
+            <Typography variant="h3" color="primary">My Dashboard</Typography>
+            <br  />
+            <Typography variant="h5">Welcome, {name}!</Typography>
+            <br /><br />
 
             <div>
                 Username: {username}
             </div>
 
-            <input type="button" onClick={handleLogout} value="Logout" />
+            <br />
+            <Button color="primary" variant="contained" onClick={handleLogout}>Logout</Button>
         </div>
     );
 }

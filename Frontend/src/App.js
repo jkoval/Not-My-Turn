@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, NavLink, Link } from './../node_modules/react-router-dom';
+import { BrowserRouter, Switch, Route } from './../node_modules/react-router-dom';
 import './App.css';
 
 import Home from './Views/Home.js';
@@ -9,6 +9,7 @@ import Dashboard from './Views/Dashboard.js';
 import Group from './Views/Group.js';
 import Drive from './Views/Drive.js';
 import CalculateDriver from './Views/CalculateDriver.js';
+import { getToken } from './Utils/UserStateUtils';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
@@ -22,7 +23,7 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 const StyledPaper = styled(Paper)({
-  minHeight: "100vh",
+  height: "90vh",
   textAlign: "center"
 });
 
@@ -36,7 +37,7 @@ const StyledGridContainer = styled(Grid)({
 
 function App() {
   return (
-    <div className="App">
+    <Grid className="App">
       <BrowserRouter>
         <div>
           <StyledAppBar position="static">
@@ -85,7 +86,7 @@ function App() {
           </Container>
         </div>
       </BrowserRouter>
-    </div>
+    </Grid>
   );
 }
 

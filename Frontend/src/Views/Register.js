@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { setUserSession } from '../Utils/UserStateUtils'
+import { Typography } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 const axios = require('axios');
 
 function Register(props) {
@@ -41,26 +44,45 @@ function Register(props) {
 
     return (
         <div>
-          Register<br /><br />
-          <div>
-            Name<br />
-            <input type="text" {...name}/>
-          </div>
-          <div style={{ marginTop: 10 }}>
-            Username<br />
-            <input type="text" {...username}/>
-          </div>
-          <div style={{ marginTop: 10 }}>
-            Password<br />
-            <input type="password" {...password}/>
-          </div>
-          <div style={{ marginTop: 10 }}>
-            Confirm Password<br />
-            <input type="password" {...confirmPassword}/>
-          </div>
+          <Typography variant="h3" color="primary">Register</Typography>
+          <br  />
+          <TextField
+            label="Name"
+            variant="outlined"
+            value={name.value}
+            onChange={name.onChange}
+          />
+          <br />
+          <br />
+          <TextField
+            label="Username"
+            variant="outlined"
+            value={username.value}
+            onChange={username.onChange}
+          />
+          <br />
+          <br />
+          <TextField
+            label="Password"
+            variant="outlined"
+            type="password"
+            value={password.value}
+            onChange={password.onChange}
+          />
+          <br />
+          <br />
+          <TextField
+            label="Confirm Password"
+            variant="outlined"
+            type="password"
+            value={confirmPassword.value}
+            onChange={confirmPassword.onChange}
+          />
+          <br />
           <br />
           {error && <><small style={{ color: 'red' }}>{error}</small><br /><br /></>}
-          <input type="button" value='Register' onClick={handleRegister} /><br />
+          <Button color="primary" variant="contained" onClick={handleRegister}>Register</Button>
+          <br />
         </div>
       );
 }

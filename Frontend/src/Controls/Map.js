@@ -42,10 +42,6 @@ class Map extends React.Component {
 
     addClickEventHandler(map, onTap) {
         map.addEventListener('tap', function (evt) {
-            //var coord = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
-            // var marker = new window.H.map.Marker({lat:coord.lat, lng:coord.lng});
-            // map.addObject(marker);
-
             onTap(map, evt.currentPointer.viewportX, evt.currentPointer.viewportY);
         });
     }
@@ -53,7 +49,7 @@ class Map extends React.Component {
     render() {
         return (
             <div>
-                <div id="here-map" style={{width: '100%', height: '600px', background: 'grey' }} />
+                <div id="here-map" style={{width: '100%', height: '500px', background: 'grey' }} />
             </div>
         );
     }

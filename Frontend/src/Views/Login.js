@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { setUserSession } from '../Utils/UserStateUtils'
+import { useHistory } from "react-router-dom";
+import { Typography } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 const axios = require('axios');
- 
+
 function Login(props) {
   const username = useFormInput('');
   const password = useFormInput('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
  
   const handleLogin = () => {
       const body = JSON.stringify({
@@ -23,7 +29,9 @@ function Login(props) {
           data: body
       }).then(response => {
           setUserSession(response.data.token, response.data.id);
-          props.history.push('/dashboard');
+          //props.history.push('/dashboard');
+          history.push('./dashboard');
+          
       }).catch(error => {
           if (error.response === undefined) {
               alert(error.message);
@@ -37,18 +45,28 @@ function Login(props) {
  
   return (
     <div>
-      Login<br /><br />
+      <Typography variant="h3" color="primary">Login</Typography>
+      <br/>
       <div>
-        Username<br />
-        <input type="text" {...username}/>
-      </div>
-      <div style={{ marginTop: 10 }}>
-        Password<br />
-        <input type="password" {...password}/>
+        <TextField
+            label="Username"
+            variant="outlined"
+            value={username.value}
+            onChange={username.onChange}
+        />
+        <br />
+        <br />
+        <TextField
+            label="Password"
+            variant="outlined"
+            type="password"
+            password={password.value}
+            onChange={password.onChange}
+        />
       </div>
       <br />
       {error && <><small style={{ color: 'red' }}>{error}</small><br /><br /></>}
-      <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+      <Button color="primary" variant="contained" onClick={handleLogin} disabled={loading}>Login</Button>
     </div>
   );
 }
