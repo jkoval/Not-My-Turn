@@ -161,7 +161,7 @@ class CalculateDriver extends React.Component {
                 </div>
 
                 <div>
-                    {this.state.nextDriver !== "" ? (<Typography variant="h1">{this.state.nextDriver}</Typography>) : <br/>}
+                    {this.state.nextDriver !== "" ? (<Typography variant="h1">The next driver should be: {this.state.nextDriver}</Typography>) : <br/>}
                 </div>
             </div>
         )

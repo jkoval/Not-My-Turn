@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from './../node_modules/react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink, Link } from './../node_modules/react-router-dom';
 import './App.css';
 
 import Home from './Views/Home.js';
@@ -13,31 +13,76 @@ import CalculateDriver from './Views/CalculateDriver.js';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 
+import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import { styled } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+
+const StyledPaper = styled(Paper)({
+  minHeight: "100vh",
+  textAlign: "center"
+});
+
+const StyledAppBar = styled(AppBar)({
+  minHeight: 60,
+})
+
+const StyledGridContainer = styled(Grid)({
+  marginTop: 4
+})
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <div>
-          <div>
-            <NavLink exact to="/">Home</NavLink>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/register">Register</NavLink>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-            <NavLink to="/groups">Groups</NavLink>
-            <NavLink to="/drives">Drives</NavLink>
-            <NavLink to="/calculateDriver">Calculate Driver</NavLink>
-          </div>
-          <div>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <PublicRoute path="/login" component={Login} />
-              <PublicRoute path="/register" component={Register} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/groups" component={Group} />
-              <PrivateRoute path="/drives" component={Drive} />
-              <PrivateRoute path="/calculateDriver" component={CalculateDriver} />
-            </Switch>
-          </div>
+          <StyledAppBar position="static">
+            <StyledGridContainer container justify="center" alignItems="center" spacing={2}>
+              <Grid item xs={12}>
+                <Grid container justify="center" spacing={2}>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/">Home</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/login">Login</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/register">Register</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/dashboard">Dashboard</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/groups">My Groups</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/drives">Add Drive</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" href="/calculateDriver">Choose Driver</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </StyledGridContainer>
+          </StyledAppBar>
+          <Container>
+            <StyledPaper>
+              <div style={{margin:"10px"}}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <PublicRoute path="/login" component={Login} />
+                  <PublicRoute path="/register" component={Register} />
+                  <PrivateRoute path="/dashboard" component={Dashboard} />
+                  <PrivateRoute path="/groups" component={Group} />
+                  <PrivateRoute path="/drives" component={Drive} />
+                  <PrivateRoute path="/calculateDriver" component={CalculateDriver} />
+                </Switch>
+              </div>
+            </StyledPaper>
+          </Container>
         </div>
       </BrowserRouter>
     </div>
