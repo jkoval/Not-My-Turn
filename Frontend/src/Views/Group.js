@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getUser, getToken } from '../Utils/UserStateUtils'
+import { Typography } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 const axios = require('axios');
 
 class GroupUser extends React.Component {
     render() {
         return (
             <div>
-                <span>{this.props.name}</span>
+                <Typography variant="p" color="secondary">{this.props.name}</Typography>
             </div>
         )
     }
@@ -47,10 +51,19 @@ class AddUser extends React.Component {
 
     render() {
         return (
-            <div>
-                <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/>
-                <input type="button" onClick={this.handleAddUser} value="Add User" />
-            </div>
+            <Grid container justify="center" spacing={2}>
+                <Grid item>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        value={this.state.username}
+                        onChange={this.handleUsernameChange}
+                    />
+                </Grid>
+                <Grid item align="center">
+                    <Button color="primary" variant="contained" onClick={this.handleAddUser}>Add Friend</Button>
+                </Grid>
+            </Grid>
         )
     }
 }
@@ -67,14 +80,23 @@ class GroupRow extends React.Component {
             rows.push(<GroupUser name={user.user.name}/>);
         });
 
+        rows.push(<br/>);
         rows.push(<AddUser groupId={this.props.id}/>);
 
         return (
             <div>
-                <span>{this.props.name}</span> - {this.props.isAdmin ? <span><b>Admin</b> <input type="button" onClick={() => this.props.handleDelete(this.props.id)} value="Delete" /> </span> : ""}
+                <Grid container justify="center" spacing={1}>
+                    <Grid item>
+                        <Typography fontWeight="fontWeightBold" variant="h5" color="secondary">{this.props.name}</Typography>
+                    </Grid>
+                    {this.props.isAdmin && <Grid item>
+                        <Button color="primary" variant="contained" onClick={() => this.props.handleDelete(this.props.id)}>Delete</Button>
+                    </Grid>}
+                </Grid>
                 <br/>
                 Users:
                 {rows}
+                <br/>
             </div>
         )
     }
@@ -145,7 +167,7 @@ class MyGroups extends React.Component {
 
         return (
             <div>
-                <h3>My Groups:</h3>
+                <Typography variant="h3" color="primary">My Groups:</Typography>
                 <div>
                     {rows}
                 </div>
@@ -186,11 +208,19 @@ function Group(props) {
         <div>
             <div>
                 <div>
-                    Group Name<br />
-                    <input type="text" {...name}/>
+                    <Typography variant="h3" color="primary">Create new Group</Typography>
+                    <br />
+                    <TextField
+                        label="Group Name"
+                        variant="outlined"
+                        value={name.value}
+                        onChange={name.onChange}
+                    />
                 </div>
-                <input type="button" onClick={handleCreateGroup} value="Create Group" />
+                <br />
+                <Button color="primary" variant="contained" onClick={handleCreateGroup}>Create Group</Button>
             </div>
+            <br/>
             <hr/>
             <div>
                 <MyGroups />

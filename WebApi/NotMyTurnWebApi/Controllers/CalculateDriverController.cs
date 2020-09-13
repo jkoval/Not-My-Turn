@@ -29,7 +29,7 @@ namespace NotMyTurnWebApi.Controllers
             var drives = _driveRepository.GetDrivesByUserGroup(groupId).ToList();
             var drivers = drives.Select(x => x.Driver.Id).Distinct().ToDictionary(x => x, y => default(T));
 
-            var noDrivesAtAll = drives[0].Group.Users.Select(x => x.UserId).Where(x => !drivers.ContainsKey(x)).ToList();
+            var noDrivesAtAll = drives.Count > 0 ? drives[0].Group.Users.Select(x => x.UserId).Where(x => !drivers.ContainsKey(x)).ToList() : new List<int>();
             return (drives, drivers, noDrivesAtAll);
         }
 

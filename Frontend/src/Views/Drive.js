@@ -137,7 +137,7 @@ class AddDrive extends React.Component {
             },
             data: body
         }).then(response => {
-            this.props.history.push('/home');
+            this.props.history.push('/calculatedriver');
         }).catch(error => {
 
         });
